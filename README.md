@@ -10,12 +10,13 @@ I have created this repository so i can get feedback on some of the issues im ha
 TO USE:  
 You need 3 things:
 
-1) Blocklyduino installed on your local computer (see https://github.com/BlocklyDuino/BlocklyDuino)
+1) Blocklyduino copied to your local drive (see https://github.com/BlocklyDuino/BlocklyDuino) i.e. dont run it from the online server
 
 2) the two zumo32U4.js files included in this repository placed in Blocklyduino/blockly/.  One in the blocks directory and one in the generators directory.
 
 3) add the following to the end of Blocklyduino/blockly/apps/blocklyduino/index.html
-	<category name="Zumo">
+Alternatively i have now (24/6/2016) added the index file to the repository.  Just copy it to the right directory.
+	<category name="Zumo"
            <block type="output_leftzmotor"></block>
            <block type="output_rightzmotor"></block>
            <block type="zprox_sense"></block>
