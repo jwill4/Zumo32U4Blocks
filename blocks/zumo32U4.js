@@ -49,7 +49,7 @@ Blockly.Blocks['output_leftzmotor'] = {
     this.setInputsInline(true);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
-    this.setColour(30);
+    this.setColour(50);
     this.setTooltip('Set left motor speed (0-400) and direction');
     this.setHelpUrl('http://www.example.com/');
   }
@@ -66,26 +66,40 @@ Blockly.Blocks['output_rightzmotor'] = {
     this.setInputsInline(true);
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setColour(30);
+    this.setColour(50);
     this.setTooltip('Set left motor speed (0-400) and direction');
     this.setHelpUrl('http://www.example.com/');
   }
 };
-/* Edit Proximity sensor block here:
-https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#v7hiz7
+/* Edit IR Reflected Proximity sensor block here: https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#822tjv
+*/
+Blockly.Blocks['zprox_sense_read'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Proximity IR Read");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(30);
+    this.setTooltip('Turns on Front IR LEDs and stores the level of IR reflected from each sensor.  The level of IR reflected can be accessed using the Proximity IR Reflected block');
+    this.setHelpUrl('https://www.pololu.com/docs/0J63');
+  }
+};
+/* Edit IR Reflected Proximity sensor block here:
+https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#jy5cz3
 */
 Blockly.Blocks['zprox_sense'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Zumo Proximity Sensor");
+        .appendField("Proximity IR Reflected");
     this.appendDummyInput()
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField(new Blockly.FieldDropdown([["Front_Left", "FRONT_LEFT"], ["Front_Right", "FRONT_RIGHT"], ["Side_Left", "SIDE_LEFT"], ["Side_Right", "SIDE_RIGHT"]]), "SENSOR");
     this.setInputsInline(true);
     this.setOutput(true, "Number");
-    this.setColour(10);
-    this.setTooltip('returns a reflected IR brightness level with front IR LEDS on: 4(low), 15, 32, 55, 85, 120(hi).');
-    this.setHelpUrl('http://www.example.com/');
+    this.setColour(30);
+    this.setTooltip('Returns a reflected IR brightness level with front IR LEDS on: 1(low), 2, 3, 4, 5, 6(high), AFTER using the Proximity IR Read block');
+    this.setHelpUrl('https://www.pololu.com/docs/0J63');
   }
 };
 /* Edit Button block here:
