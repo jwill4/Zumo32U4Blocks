@@ -35,8 +35,18 @@ Blockly.Arduino['output_rightzmotor'] = function() {
 
 return code;
 };
-
-/* generate code to read proximity sensors */
+/* generate code to turn on Leds and read reflected brightness levels from proximity sensors*/
+Blockly.Arduino['zprox_sense_read'] = function() {
+  
+  Blockly.Arduino.definitions_['define_Zumo32U4ProximitySensors'] = '#include <Zumo32U4ProximitySensors.h>\n';
+  Blockly.Arduino.definitions_['var_Zumo32U4ProximitySensors'] = 'Zumo32U4ProximitySensors proxSensors;\n';
+  Blockly.Arduino.setups_['setup_init_sensors'] = 'proxSensors.initThreeSensors();\n';
+  
+  var code = 'proxSensors.read();\n';
+  
+  return code;
+};
+/* generate code to return reflected IR level from proximity sensors */
 Blockly.Arduino['zprox_sense'] = function() {
   var dropdown_sensor = this.getFieldValue('SENSOR');
 
