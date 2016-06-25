@@ -1,4 +1,37 @@
-goog.provide('Blockly.Arduino.custom');
+/* Generates code in Blocklyduino environment for use with Pololu Zumo 32U4 mini-sumo robot
+To use Zumo 32U4 blocks in Blocklyduino you need 4 things:
+1) Blocklyduino installed on your local computer (see https://github.com/BlocklyDuino/BlocklyDuino)
+2) this zumo32U4.js file in Blocklyduino\blockly\generators
+3) another zumo32U4.js file (included in this repository) for building code in Blocklyduino\blockly\blocks
+4) add the following to the end of index.html file in Blocklyduino\blockly\apps\blocklyduino\
+	<category name="Zumo">
+           <block type="output_leftzmotor"></block>
+           <block type="output_rightzmotor"></block>
+           <block type="output_bothzmotor"></block>
+           <block type="zprox_sense"></block>
+		   <block type="read_prox_sense"></block>
+		   <block type="line_sense"></block>
+		   <block type="read_line_sense"></block>
+           <block type="button_a"></block>
+           <block type="button_b"></block>
+           <block type="button_c"></block>
+           <block type="led_red"></block>
+           <block type="led_yellow"></block>
+           <block type="led_green"></block>
+           <block type="lcd_clear"></block>
+           <block type="lcd_string"></block>
+           <block type="lcd_number"></block>
+           <block type="buzzer_play"></block>
+           <block type="buzzer_stop"></block>
+    </category> 
+
+Authors jwill4 & taipan541 */
+
+/* Credit to Fred Lin for developing the original Blocklyduino code
+https://github.com/BlocklyDuino/BlocklyDuino */
+
+
+goog.provide('Blockly.Arduino.zumo32U4');
 
 goog.require('Blockly.Arduino');
 
@@ -35,6 +68,28 @@ Blockly.Arduino['output_rightzmotor'] = function() {
 
 return code;
 };
+Blockly.Arduino['output_bothzmotor'] = function() {
+  var dropdown_direction_L = this.getFieldValue('Direction_L');
+  var dropdown_direction_R = this.getFieldValue('Direction_R');
+  var value_speed_L = Blockly.Arduino.valueToCode(this, 'SPEED_L', Blockly.Arduino.ORDER_ATOMIC);
+  var value_speed_R = Blockly.Arduino.valueToCode(this, 'SPEED_R', Blockly.Arduino.ORDER_ATOMIC);
+
+  Blockly.Arduino.definitions_['define_Zumo32U4Motors'] = '#include <Zumo32U4Motors.h>\n';
+  Blockly.Arduino.definitions_['var_Zumo32U4Motors'] = 'Zumo32U4Motors motors;\n';
+
+  if(dropdown_direction_L == "BACKWARD_L"){
+	  value_speed_L = value_speed_L * -1;
+  }
+
+  if(dropdown_direction_R == "BACKWARD_R"){
+	  value_speed_R = value_speed_R * -1;
+  }
+  
+  var code = 'motors.setSpeeds(' + value_speed_L + ', ' + value_speed_R + ');\n';
+
+return code;
+};
+
 /* generate code to turn on Leds and read reflected brightness levels from proximity sensors*/
 Blockly.Arduino['zprox_sense_read'] = function() {
   
@@ -69,6 +124,40 @@ Blockly.Arduino['zprox_sense'] = function() {
 
   return [code, Blockly.Arduino.ORDER_ATOMIC];
 };
+/* generate code to read line sensors */
+Blockly.Arduino['line_sense'] = function() {
+  var dropdown_sensor = this.getFieldValue('SENSOR');
+
+  Blockly.Arduino.definitions_['define_Zumo32U4LineSensors'] = '#include <Zumo32U4LineSensors.h>\n';
+  Blockly.Arduino.definitions_['var_Zumo32U4LineSensors'] = 'Zumo32U4LineSensors lineSensors;\n';
+  Blockly.Arduino.definitions_['arr_Zumo32U4LineSensors'] = 'uint16_t lineSensorValues[5];\n';
+  Blockly.Arduino.setups_['setup_init_sensors_line'] = 'lineSensors.initFiveSensors();\n';
+
+  if(dropdown_sensor == "SENSOR_0") {
+    var code =  'lineSensorValues[0]';
+  }
+  if(dropdown_sensor == "SENSOR_1") {
+    var code =  'lineSensorValues[1]';
+  }
+  if(dropdown_sensor == "SENSOR_2") {
+    var code =  'lineSensorValues[2]';
+  }
+  if(dropdown_sensor == "SENSOR_3") {
+    var code =  'lineSensorValues[3]';
+  }
+  if(dropdown_sensor == "SENSOR_4") {
+    var code =  'lineSensorValues[4]';
+  }
+  
+  return [code, Blockly.Arduino.ORDER_ATOMIC];
+};
+
+Blockly.Arduino['read_line_sense'] = function() {
+	var code = 'lineSensors.read(lineSensorValues);\n';
+	
+	return code;
+};
+
 /* generate code for Button reading */
 Blockly.Arduino['button_a'] = function() {
 
@@ -128,3 +217,61 @@ Blockly.Arduino['lcd_number'] = function() {
   var code = 'lcd.print('+value_lcd_number+');\n';
   return code;
 };
+/* generate code for LED on or off */
+Blockly.Arduino['led_red'] = function() {
+  var statusLed = this.getFieldValue('status');
+  Blockly.Arduino.definitions_['define_Zumo32U4'] = '#include <Zumo32U4.h>\n';
+  var code = 'ledRed(' + statusLed + ');\n';
+  
+  return code;
+};
+Blockly.Arduino['led_yellow'] = function() {
+  var statusLed = this.getFieldValue('status');
+  Blockly.Arduino.definitions_['define_Zumo32U4'] = '#include <Zumo32U4.h>\n';
+  var code = 'ledYellow(' + statusLed + ');\n';
+  
+  return code;
+};
+Blockly.Arduino['led_green'] = function() {
+  var statusLed = this.getFieldValue('status');
+  Blockly.Arduino.definitions_['define_Zumo32U4'] = '#include <Zumo32U4.h>\n';
+  var code = 'ledGreen(' + statusLed + ');\n';
+  
+  return code;
+};
+/* generate code for Buzzer */
+Blockly.Arduino['buzzer_play'] = function() {
+    Blockly.Arduino.definitions_['define_Zumo32U4'] = '#include <Zumo32U4.h>\n';
+    Blockly.Arduino.definitions_['var_Zumo32U4_buzzer'] = 'Zumo32U4Buzzer buzzer;\n';
+	
+	var dropdown_note = this.getFieldValue('NOTE');
+	var octave = Blockly.Arduino.valueToCode(this, 'OCTAVE', Blockly.Arduino.ORDER_ATOMIC);
+	var durationSec = Blockly.Arduino.valueToCode(this, 'DURATION', Blockly.Arduino.ORDER_ATOMIC);
+	var volume = Blockly.Arduino.valueToCode(this, 'VOLUME', Blockly.Arduino.ORDER_ATOMIC);
+	
+	var code = 'buzzer.playNote(';
+	
+	if(dropdown_note == 'SILENT') {
+		code += 'SILENT_NOTE';
+	}
+	else {
+		code += 'NOTE_' + dropdown_note;
+		code += '(' + octave + ')';
+	}
+	
+	code += ', ';
+	code += (durationSec * 1000);
+	code += ', ';
+	code += volume + ');\n';
+	
+	return code;
+};
+Blockly.Arduino['buzzer_stop'] = function() {
+    Blockly.Arduino.definitions_['define_Zumo32U4'] = '#include <Zumo32U4.h>\n';
+    Blockly.Arduino.definitions_['var_Zumo32U4_buzzer'] = 'Zumo32U4Buzzer buzzer;\n';
+	
+    var code = 'buzzer.stopPlaying();\n';
+	
+    return code;
+};
+
