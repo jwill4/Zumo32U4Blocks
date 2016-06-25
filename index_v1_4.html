@@ -319,18 +319,38 @@ function init() {
   <textarea id="content_xml" class="content" wrap="off"></textarea>
 
   <xml id="toolbox" style="display: none">
-    <category name="Zumo32U4">
-           <block type="output_leftzmotor"></block>
-           <block type="output_rightzmotor"></block>
-           <block type="zprox_sense_read"></block>
-           <block type="zprox_sense"></block>
-           <block type="button_a"></block>
-           <block type="button_b"></block>
-           <block type="button_c"></block>
+	<category name="Zumo 32u4">
+		<category name="LCD">
            <block type="lcd_clear"></block>
            <block type="lcd_string"></block>
            <block type="lcd_number"></block>
-    </category>
+		</category>
+		<category name="Motors">
+           <block type="output_leftzmotor"></block>
+           <block type="output_rightzmotor"></block>
+		   <block type="output_bothzmotor"></block>
+		</category>
+		<category name="Sensors">
+           <block type="zprox_sense"></block>
+		   <block type="zprox_sense_read"></block>
+		   <block type="line_sense"></block>
+		   <block type="read_line_sense"></block>
+		</category>
+		<category name="LED Light">
+            <block type="led_red"></block>
+            <block type="led_yellow"></block>
+            <block type="led_green"></block>
+		</category>
+		<category name="Buttons">
+           <block type="button_a"></block>
+           <block type="button_b"></block>
+           <block type="button_c"></block>
+		</category>
+		<category name="Buzzer">   
+		   <block type="buzzer_play"></block>
+           <block type="buzzer_stop"></block>
+        </category>
+        </category>
     <category name="Logic">
       <block type="controls_if"></block>
       <block type="logic_compare"></block>
