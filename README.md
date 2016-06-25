@@ -32,4 +32,20 @@ If you are working with the Zumo 32U4 bot then i assume you are already familiar
 Arduino IDE (Google: "arduino").  You will need the Pololu libraries and board drivers for Zumo32U4 from the Pololu site.
 Sounds like a bit of mucking around but you've got this far.  One step at a time it can be done.
 I run the whole setup from a USB drive when working in the classroom.
-Author jwill*/
+
+Authors and Contributors
+
+Fred Lin (@gasolin) @taipan541 @jwill4
+
+Thanks Neil Fraser, Q.Neutron from Blockly https://developers.google.com/blockly/ Thanks Dale Low (gumbypp) for contribute the python server to pipe BlocklyDuino source to arduino board. Thanks Arduino and Seeeduino guys for Arduino and Grove blocks.
+
+The project is also inspired by arduiblock and modkit
+
+License
+
+Copyright (C) 2012~2016 Original Developer: Fred Lin gasolin+blockly@gmail.com Extension Developer: taipan541
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at *
+http://www.apache.org/licenses/LICENSE-2.0
