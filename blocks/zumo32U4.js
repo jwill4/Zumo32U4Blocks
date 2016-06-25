@@ -1,5 +1,4 @@
 /* Generates code in Blocklyduino environment for use with Pololu Zumo 32U4 mini-sumo robot
-
 To use Zumo 32U4 blocks in Blocklyduino you need 4 things:
 1) Blocklyduino installed on your local computer (see https://github.com/BlocklyDuino/BlocklyDuino)
 2) this zumo32U4.js file in Blocklyduino\blockly\blocks
@@ -8,32 +7,31 @@ To use Zumo 32U4 blocks in Blocklyduino you need 4 things:
 	<category name="Zumo">
            <block type="output_leftzmotor"></block>
            <block type="output_rightzmotor"></block>
+           <block type="output_bothzmotor"></block>
            <block type="zprox_sense"></block>
+		   <block type="read_prox_sense"></block>
+		   <block type="line_sense"></block>
+		   <block type="read_line_sense"></block>
            <block type="button_a"></block>
            <block type="button_b"></block>
            <block type="button_c"></block>
+           <block type="led_red"></block>
+           <block type="led_yellow"></block>
+           <block type="led_green"></block>
            <block type="lcd_clear"></block>
            <block type="lcd_string"></block>
            <block type="lcd_number"></block>
-    </category>
-
-If you are working with the Zumo 32U4 bot then i assume you are already familiar with uploading code to it from the 
-Arduino IDE (check Pololu site).  You will need the Pololu libraries and board drivers for Zumo32U4 from the Pololu site.
-
-I run the whole setup from a USB drive when working in the classroom.
-
-Author jwill4 */
+           <block type="buzzer_play"></block>
+           <block type="buzzer_stop"></block>
+    </category> 
+Authors jwill4 & taipan541 */
 
 /* Credit to Fred Lin for developing the original Blocklyduino code
 https://github.com/BlocklyDuino/BlocklyDuino */
 
-
-
-
 'use strict';
 
 //To support syntax defined in http://arduino.cc/en/Reference/HomePage
-
 goog.provide('Blockly.Blocks.zumo32U4');
 
 goog.require('Blockly.Blocks');
@@ -49,7 +47,7 @@ Blockly.Blocks['output_leftzmotor'] = {
     this.setInputsInline(true);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
-    this.setColour(50);
+    this.setColour(10);
     this.setTooltip('Set left motor speed (0-400) and direction');
     this.setHelpUrl('http://www.example.com/');
   }
@@ -66,8 +64,35 @@ Blockly.Blocks['output_rightzmotor'] = {
     this.setInputsInline(true);
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setColour(50);
+    this.setColour(10);
     this.setTooltip('Set left motor speed (0-400) and direction');
+    this.setHelpUrl('http://www.example.com/');
+  }
+};
+/* Edit both motors block here:
+https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#9gd7hq
+*/
+Blockly.Blocks['output_bothzmotor'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Zumo Both Motors");
+    this.appendDummyInput()
+        .appendField("Left:")
+        .appendField(new Blockly.FieldDropdown([["Forward", "FORWARD"], ["Backward", "BACKWARD"]]), "Direction_L");
+    this.appendValueInput("SPEED_L")
+        .setCheck("Number")
+        .appendField("Speed");
+    this.appendDummyInput()
+        .appendField("Right:")
+        .appendField(new Blockly.FieldDropdown([["Forward", "FORWARD"], ["Backward", "BACKWARD"]]), "Direction_R");
+    this.appendValueInput("SPEED_R")
+        .setCheck("Number")
+        .appendField("Speed");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(10);
+    this.setTooltip('');
     this.setHelpUrl('http://www.example.com/');
   }
 };
@@ -80,7 +105,7 @@ Blockly.Blocks['zprox_sense_read'] = {
     this.setInputsInline(true);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
-    this.setColour(30);
+    this.setColour(10);
     this.setTooltip('Turns on Front IR LEDs and stores the level of IR reflected from each sensor.  The level of IR reflected can be accessed using the Proximity IR Reflected block');
     this.setHelpUrl('https://www.pololu.com/docs/0J63');
   }
@@ -97,9 +122,40 @@ Blockly.Blocks['zprox_sense'] = {
         .appendField(new Blockly.FieldDropdown([["Front_Left", "FRONT_LEFT"], ["Front_Right", "FRONT_RIGHT"], ["Side_Left", "SIDE_LEFT"], ["Side_Right", "SIDE_RIGHT"]]), "SENSOR");
     this.setInputsInline(true);
     this.setOutput(true, "Number");
-    this.setColour(30);
+    this.setColour(10);
     this.setTooltip('Returns a reflected IR brightness level with front IR LEDS on: 1(low), 2, 3, 4, 5, 6(high), AFTER using the Proximity IR Read block');
     this.setHelpUrl('https://www.pololu.com/docs/0J63');
+  }
+};
+/* Edit Line sensor block here:
+https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#to34qt
+*/
+Blockly.Blocks['line_sense'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Zumo Line Sensor");
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField(new Blockly.FieldDropdown([["Sensor_0", "SENSOR_0"], ["Sensor_1", "SENSOR_1"], ["Sensor_2", "SENSOR_2"], ["Sensor_3", "SENSOR_3"], ["Sensor_4", "SENSOR_4"]]), "SENSOR");
+    this.setInputsInline(true);
+    this.setOutput(true, "Number");
+    this.setColour(10);
+    this.setTooltip('');
+    this.setHelpUrl('http://www.example.com/');
+  }
+};
+/* Edit Line sensor block here:
+https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#kfyiky
+*/
+Blockly.Blocks['read_line_sense'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Read Zumo Line Sensors");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(10);
+    this.setTooltip('');
+    this.setHelpUrl('http://www.example.com/');
   }
 };
 /* Edit Button block here:
@@ -175,6 +231,93 @@ Blockly.Blocks['lcd_number'] = {
     this.setNextStatement(true);
     this.setColour(10);
     this.setTooltip('prints number to LCD screen');
+    this.setHelpUrl('http://www.example.com/');
+  }
+};
+/* Edit LED block here:
+https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#owzhug
+*/
+Blockly.Blocks['led_red'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Red LED");
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldDropdown([["On", "1"], ["Off", "0"]]), "status");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(10);
+    this.setTooltip('');
+    this.setHelpUrl('http://www.example.com/');
+  }
+};
+
+Blockly.Blocks['led_yellow'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Yellow LED");
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldDropdown([["On", "1"], ["Off", "0"]]), "status");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(10);
+    this.setTooltip('');
+    this.setHelpUrl('http://www.example.com/');
+  }
+};
+Blockly.Blocks['led_green'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Green LED");
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldDropdown([["On", "1"], ["Off", "0"]]), "status");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(10);
+    this.setTooltip('');
+    this.setHelpUrl('http://www.example.com/');
+  }
+};
+/* Edit buzzer block here:
+https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#cz56ke
+*/
+Blockly.Blocks['buzzer_play'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Zumo Play Buzzer");
+    this.appendDummyInput()
+        .appendField("Note")
+        .appendField(new Blockly.FieldDropdown([["C", "C"], ["C#", "C_SHARP"], ["Db", "D_FLAT"], ["D", "D"], ["D#", "D_SHARP"], ["Eb", "E_FLAT"], ["E", "E"], ["F", "F"], ["F#", "F_SHARP"], ["Gb", "G_FLAT"], ["G", "G"], ["G#", "G_SHARP"], ["Ab", "A_FLAT"], ["A", "A"], ["A#", "A_SHARP"], ["Bb", "B_FLAT"], ["B", "B"], ["Silent", "SILENT"]]), "NOTE");
+    this.appendValueInput("OCTAVE")
+        .setCheck("Number")
+        .appendField("octave");
+    this.appendValueInput("DURATION")
+        .setCheck("Number")
+        .appendField("duration (seconds)");
+    this.appendValueInput("VOLUME")
+        .setCheck("Number")
+        .appendField("volume");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(10);
+    this.setTooltip('');
+    this.setHelpUrl('http://www.example.com/');
+  }
+};
+/* Edit buzzer block here:
+https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#fwdedx
+*/
+Blockly.Blocks['buzzer_stop'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Zumo Stop Buzzer");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(10);
+    this.setTooltip('');
     this.setHelpUrl('http://www.example.com/');
   }
 };
